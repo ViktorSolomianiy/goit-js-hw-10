@@ -23,7 +23,9 @@ function searchCountry(e) {
   fetchCountries(inputValue)
     .then(createCountryList)
     .catch(err => {
-      Notify.failure('Oops, there is no country with that name');
+      if (err && inputValue !== '') {
+        Notify.failure('Oops, there is no country with that name');
+      }
     });
 }
 
@@ -40,8 +42,8 @@ function createCountryList(countries) {
   listEl.innerHTML = markupCountriesList;
 
   if (countries.length === 1) {
-    const bigImg = document.querySelector('.country');
-    bigImg.classList.add('only-country');
+    const bigEl = document.querySelector('.country');
+    bigEl.classList.add('only-country');
 
     const markupCountriesInfo = countries
       .map(
