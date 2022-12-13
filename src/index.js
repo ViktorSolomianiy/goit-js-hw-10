@@ -17,6 +17,7 @@ function searchCountry(e) {
 
   if (inputValue === '') {
     listEl.innerHTML = '';
+    infoBox.innerHTML = '';
   }
 
   fetchCountries(inputValue)
@@ -45,9 +46,9 @@ function createCountryList(countries) {
     const markupCountriesInfo = countries
       .map(
         ({ capital, population, languages }) => `
-    <p>Capital: ${capital}</p>
-    <p>Population: ${population}</p>
-    <p>Languages: ${Object.values(languages)}</p>
+    <p><b>Capital:</b> ${capital}</p>
+    <p><b>Population:</b> ${population}</p>
+    <p><b>Languages:</b> ${Object.values(languages)}</p>
     `
       )
       .join('');

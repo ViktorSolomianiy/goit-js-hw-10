@@ -25,7 +25,7 @@ li {
 
 p {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   margin: 5px;
 }
 
@@ -38,6 +38,11 @@ img {
   width: 120px;
   height: auto;
   box-shadow: 6px 7px 11px 1px rgba(0, 0, 0, 0.58);
+  transition: transform 300ms;
+}
+
+.only-country img:hover {
+  transform: scale(1.04);
 }
 
 h1 {
