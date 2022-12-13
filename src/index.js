@@ -15,13 +15,9 @@ inputEl.addEventListener('input', debounce(searchCountry, DEBOUNCE_DELAY));
 function searchCountry(e) {
   const inputValue = e.target.value.trim();
 
-  setTimeout(() => {
-    if (inputValue.length === 1) {
-      Notify.info('Too many matches found. Please enter a more specific name.');
-    } else if (inputValue === '') {
-      listEl.innerHTML = '';
-    }
-  }, 1000);
+  if (inputValue === '') {
+    listEl.innerHTML = '';
+  }
 
   fetchCountries(inputValue)
     .then(createCountryList)
@@ -61,6 +57,11 @@ function createCountryList(countries) {
     return;
   }
   infoBox.innerHTML = '';
+
+  if (countries.length > 10) {
+    Notify.info('Too many matches found. Please enter a more specific name.');
+    listEl.innerHTML = '';
+  }
 }
 
 // function createCountryInfo(countries) {
