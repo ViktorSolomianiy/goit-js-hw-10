@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 import './css/styles.css';
 
@@ -9,10 +10,49 @@ const infoBox = document.querySelector('.country-info');
 
 const DEBOUNCE_DELAY = 300;
 
-inputEl.addEventListener('input', searchCountry);
+inputEl.addEventListener('input', debounce(searchCountry, DEBOUNCE_DELAY));
 
 function searchCountry(e) {
-  const res = e.target.value;
+  const inputValue = e.target.value.trim();
 
-  fetchCountries(res);
+  if (inputValue === '') {
+    listEl.innerHTML = '';
+  }
+
+  if (inputValue > 10) {
+    Notiflix.Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
+  }
+
+  fetchCountries(inputValue)
+    .then(createCountryList)
+    .catch(err => {
+      console.log(err);
+    });
 }
+
+function createCountryList(countries) {
+  const markupCountriesList = countries
+    .map(
+      ({ name, flags }) =>
+        `<li class="country">
+          <img src="${flags.svg}" alt="Flag of ${name.official}" width="50"/>
+          <h1>${name.official}</h1>
+        </li>`
+    )
+    .join('');
+  console.log(markupCountriesList);
+
+  listEl.insertAdjacentHTML('beforeend', markupCountriesList);
+}
+
+// function createCountryInfo(countries) {
+//   const markupCountriesInfo = countries.map(
+//     ({ name, capital, population, flags, languages }) => {
+//       `<ul><li>Capital: ${capital}</li></ul>`;
+//     }
+//   );
+
+//   infoBox.insertAdjacentHTML('beforeend', markupCountriesInfo);
+// }
