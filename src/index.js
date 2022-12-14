@@ -16,21 +16,43 @@ function searchCountry(e) {
   const inputValue = e.target.value.trim();
 
   if (inputValue === '') {
-    return;
+    listEl.innerHTML = '';
   }
 
-  fetchCountries(inputValue).then(createCountryList);
+  if (inputValue > 10) {
+    Notiflix.Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
+  }
+
+  fetchCountries(inputValue)
+    .then(createCountryList)
+    .catch(err => {
+      console.log(err);
+    });
 }
 
 function createCountryList(countries) {
   const markupCountriesList = countries
     .map(
       ({ name, flags }) =>
-        `<li class="country"><img src="${flags.svg}"
-      alt="Flag of ${name.official}" />
-      <h1>${name.official}</h1></li>`
+        `<li class="country">
+          <img src="${flags.svg}" alt="Flag of ${name.official}" width="50"/>
+          <h1>${name.official}</h1>
+        </li>`
     )
     .join('');
-
   console.log(markupCountriesList);
+
+  listEl.insertAdjacentHTML('beforeend', markupCountriesList);
 }
+
+// function createCountryInfo(countries) {
+//   const markupCountriesInfo = countries.map(
+//     ({ name, capital, population, flags, languages }) => {
+//       `<ul><li>Capital: ${capital}</li></ul>`;
+//     }
+//   );
+
+//   infoBox.insertAdjacentHTML('beforeend', markupCountriesInfo);
+// }
